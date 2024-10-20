@@ -1,6 +1,214 @@
-/** @format */
+/* @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap'); */
 
-.title {
-  color: red;
-  text-decoration: underline;
+@font-face {
+  font-family: "Roboto";
+  src: url("./fonts/Roboto/Roboto-Regular.ttf");
 }
+@font-face {
+  font-family: "Roboto-Medium";
+  src: url("./fonts/Roboto/Roboto-Medium.ttf");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+html {
+  color: #5a5956;
+  font-size: 16px;
+
+}
+
+/* -- SERVICE AND PRODUCT -- */
+.serviceProduct {
+  /* width: 1280px; */
+  /* height: 726px; */
+  background-color: #fff;
+  margin: 30px auto 40px;
+}
+
+.serviceProduct .title > .service-title {
+  font-size: 1.5rem; /*  16px -- 1rem  24px  --- 24/16 = 1.5rem */
+  font-family: "Roboto";
+  line-height: 28.13px;
+  text-align: center;
+  color: #5a5956;
+}
+
+.serviceProduct .title .service-description {
+  width: 100%;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 16.41px;
+  text-align: center;
+  margin: 20px auto 40px;
+  color: #4a4a4a;
+}
+
+.serviceProduct section .row {
+  width: 100%;
+}
+
+.serviceProduct section .row article {
+  width: 100%;
+  border: 1px solid #d3dde0;
+  text-align: center;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.serviceProduct section .row article img {
+  border-radius: 5px 0px 0px 0px;
+  margin: 15px 0;
+}
+
+.serviceProduct section .row article h6 {
+  /* top: 811px;
+  left: 357px;
+  gap: 0px;
+  opacity: 0px; */
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16.41px;
+  /* text-align: center; */
+  color: #2e2f30;
+  margin-top: 10px;
+}
+
+
+
+.serviceProduct section .row article p,
+.serviceProduct section .row article a {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16.41px;
+  text-align: center;
+  color: #5a5956;
+}
+
+.serviceProduct section .row article p {
+  margin: 15px 20px;
+}
+
+.serviceProduct section .row article a img {
+  opacity: 0px;
+  color: #127bbe;
+  margin: auto 10px;
+}
+
+/* -- SUPPLY CHAIN -- */
+.supply-chain {
+  /* width: 1280px; */
+  /* height: 498px; */
+  background: #f1f4f5;
+}
+
+.supply-chain .title h2 {
+  background-color: #f1f4f5;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 28.13px;
+  text-align: center;
+  padding-top: 30px;
+}
+
+.supply-chain .title p {
+  width: 100%;
+  height: 34px;
+  /* top: 1345px; */
+  /* left: 458px; */
+  /* gap: 0px; */
+  /* opacity: 0px; */
+  text-align: center;
+  margin: 23px auto 42px;
+}
+
+.supply-chain .supply-chain__card {
+  display: flex;
+  /* margin: 30px auto; */
+  align-items: center;
+  justify-content: space-evenly;
+  /* flex-wrap: wrap; */
+  /* column-gap: 2em; */
+}
+
+.supply-chain .card {
+  width: 300px;
+  /* height: 125px; */
+  /* top: 1483px; */
+  /* left: 99px; */
+  /* gap: 0px; */
+  /* opacity: 0px; */
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 25px;
+  text-align: center;
+  color: #5a5956;
+};
+
+.supply-chain .card h6 {
+  /* width: 75px; */
+  /* height: 29px; */
+  /* top: 1429px; */
+  left: 212px;
+  gap: 0px;
+  opacity: 0px;
+  font-size: 24px;
+  /* font-weight: 300; */
+  line-height: 28.13px;
+  text-align: center;
+  color: #5a5956;
+  margin-bottom: 27px;
+}
+
+.supply-chain .btn-getting-started {
+  margin: 55px auto 30px;
+  text-align: center;
+}
+
+.supply-chain .btn-getting-started button {
+  border: 1.5px solid #127bbe;
+  color: #127bbe;
+  padding: 15px 40px;
+  -webkit-text-stroke: thin;
+}
+
+@media screen and (min-width: 768px)  {  /*tablet desktop*/
+ .supply-chain .title p,
+ .serviceProduct .title .service-description {
+    width: 400px;
+  }
+
+  .serviceProduct section .row {
+    margin: auto;
+    width: 768px;
+    display: flex;
+  }
+
+  .serviceProduct section .row article {
+    width: 33.33%;
+    height: 256px;
+    margin-bottom: 0
+  }
+}
+
+@media screen and (min-width: 1400px)  {  /*tablet desktop*/
+ .supply-chain .title p,
+ .serviceProduct .title .service-description {
+    width: 700px;
+  }
+
+  .serviceProduct section .row {
+    width: 1200px;
+  }
+}
+
+/*
+Homework 1:
+- Fix the existing issues
+- Update the html/css project to be responsive: mobile + desktop
+*/
