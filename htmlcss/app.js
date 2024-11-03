@@ -557,3 +557,152 @@ const products3 = [{
    merge => return a new array = [0, 2, 2, 4, 4, 7, 9, 9]
    // O(n + m)
  */
+
+function convertPrice(priceNum) {
+  const number = Number(priceNum);
+  let priceStr = '';
+
+  const numStr = number.toString();
+
+  for (let i = numStr.length - 1; i >= 0; i--) {
+      priceStr = numStr[i] + priceStr;
+      if ((numStr.length - i) % 3 === 0 && i !== 0) {
+          priceStr = ',' + priceStr;
+      }
+  }
+
+  return priceStr;
+}
+
+console.log('convertPrice ', convertPrice(300000))
+console.log('convertPrice ', convertPrice(300000050))
+
+function convertProducts(products) {
+  return products.reduce((acc, item) => {
+    if (item) {
+      acc.totalQuantity += item.quantity
+      acc.products.push({
+        name: item.name,
+        price: item.price.toLocaleString().replaceAll('.', ',')
+      })
+    }
+    return acc
+  }, {
+    totalQuantity: 0,
+    products: []
+  })
+}
+
+console.log(convertProducts(products3))
+
+const nums11 = [2, 3, 14]; // O(m)
+const nums22 = [2, 2, 4, 7, 9, 10]; // O(n)
+// nums22.reverse() // [10, 9, 7, 4, 2, 2]
+// O(m + n)
+
+// [0, 2,2,4,9] 
+
+function mergeSortArray(arr1, arr2) {
+    const mergedArray = [];
+    let i = 0; 
+    let j = 0; 
+
+    while (i < arr1.length || j < arr2.length) {
+        if ( j === arr2.length || arr1[i] < arr2[j]) {
+            mergedArray.push(arr1[i]);
+            i++;
+        } else {
+            mergedArray.push(arr2[j]);
+            j++;
+        }
+    }
+    return mergedArray;
+}
+
+
+const result4 = mergeSortArray(nums11, nums22);
+console.log(result4);
+
+// 10001: 'Price is empty'
+// 999: Unknow issue
+// 10002: ''
+
+const ERROR_MSGS = {
+  10001: 'Price is empty',
+  999: "Unknow issue",
+  10002: 'Name is empty'
+} 
+
+function getError2(errorCode) {
+  return ERROR_MSGS[errorCode] || ''
+}
+
+const getErr = (errorCode) => {
+  let messageError = ''
+  switch (errorCode) {
+    case 10001:
+
+      messageError = 'Price is empty'
+      return messageError
+    case 999:
+      messageError = 'Unknow issue'
+      return messageError
+    case 10002:
+      messageError = 'Name is empty'
+      return messageError
+  }
+
+}
+
+let arrX = [1, 3]
+let objX = {
+  name: 'text',
+  age: 13
+}
+
+const arrY = [...arrX] // copy arr
+console.log('X ', arrX)
+console.log('Y ', arrY)
+
+arrY.pop()
+console.log('X @ ', arrX)
+console.log('Y @ ', arrY)
+
+let objY = Object.assign({}, objX)
+objY.birthDay = ''
+
+
+const person = {
+  name: "John",
+  birthDate: '1980-02-09',
+  getAge: function() {
+    console.log('this ', this)
+    const date = new Date(this.birthDate);
+    const today = new Date();
+    return  today.getFullYear() - date.getFullYear()
+  }
+}
+
+
+// Homework
+const shop = {
+  name: 'Furniture',
+  activeTime: "8am-10pm",
+  categories: ['bedroom', 'kitchen', 'conference'],
+  // return boolean
+  isActive: function() {
+    
+  },
+  sortAlphabet: function() {
+      // modify on the categories
+  },
+
+  getCategoriesAndNew: function(category) { // washroom
+    return  // a sorted array of categories
+  }
+}
+
+/**
+ * 
+ */
+
