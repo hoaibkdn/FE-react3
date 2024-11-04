@@ -169,12 +169,46 @@ function SortedArray(nums) {
 
 SortedArray.prototype.get = function (num) {
   // return index in the array
+  return this.numbers.indexOf(num);
 };
 SortedArray.prototype.set = function (num) {
   // [1, 2, 3, 3, 5, 6]
   // add the number in order
+  const idx = this.get(num);
+  if (idx > -1) {
+    this.numbers.splice(idx, 0, num);
+    return;
+  }
+  const isSmallest = this.numbers[0] >= num;
+  if (isSmallest) {
+    this.numbers.unshift(num);
+    return;
+  }
+  const isGreatest = this.numbers[this.numbers.length - 1] <= num;
+  if (isGreatest) {
+    this.numbers.push(num);
+  }
 };
 
 SortedArray.prototype.remove = function (num) {
   // remove the input number in the array
+  const idx = this.get(num); // for
+  if (idx >= 0) {
+    this.numbers.splice(idx, 1); // for
+  }
+
+  // const arr = this.numbers.filter((item) => item !== num); // space O(n)
+  this.numbers = this.numbers.filter((item) => item !== num); // time
 };
+
+const sortedArr = new SortedArray([4, 6, 6, 9]);
+console.log(sortedArr.get(2));
+console.log(sortedArr.get(6));
+sortedArr.set(1);
+sortedArr.set(7);
+sortedArr.set(9);
+console.log(sortedArr.numbers);
+sortedArr.remove(6);
+sortedArr.remove(3);
+console.log(sortedArr.numbers);
+console.log(sortedArr);
