@@ -58,14 +58,22 @@ console.log('hello');
  * 301 302 303: success, redirect
  */
 
-function fetchPost(postId) {}
+async function fetchPost(postId) {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts/`);
+  if (res.status !== 200) {
+    throw new Error('Error fetching post');
+  }
+
+  const posts = await res.json(); // string
+  return post;
+}
 
 async function fetchPostById(postId) {
   const res = await fetch(
     `https://jsonplaceholder.typicode.com/posts/${postId}`
   );
   if (res.status !== 200) {
-    throw new Error('Error fetching post');
+    throw new Error('Error fetching post'); //
   }
 
   const post = await res.json(); // string
@@ -146,3 +154,79 @@ fetchAllData4();
  *    }]
  * }
  */
+
+async function fetchDataCombined() {
+  try {
+    const fetchUsers = fetchUsers(); // 660
+    const fetchPosts = fetchPostById(10000); // 560
+    const usersData = await fetchUsers; // 660
+    const postsData = await fetchPosts; // 0
+
+    // 660ms
+    const users = usersData.reduce((acc, user) => {
+      if (user) {
+        acc[user.id] = user;
+      }
+      return acc;
+    }, {}); // m
+    const combinedData = postsData.map((post) => {
+      // O(n)
+      // 1220
+      // const author = usersData.find((user) => user.id === post.userId); // undefined
+      const author = users[post.userId]; // O(1)
+      return {
+        ...post,
+        author: author ? author.name : 'Unknown',
+      };
+    }); // O(m * n)
+    // Expect: O(m+n)
+
+    return combinedData;
+  } catch (err) {
+    console.log('Error fetching data try catch', err); //
+    return null;
+  }
+}
+
+fetchDataCombined()
+  .then((res) => console.log(res))
+  .catch((err) => console.log('catch promise ', err)); //
+
+// 2nd
+function fetchData5() {
+  return (
+    Promise.all([
+      fetch('https://jsonplaceholder.typicode.com/posts'), // 600
+      fetch('https://jsonplaceholder.typicode.com/users'), // 500
+    ])
+
+      .then((response) => {
+        // 600
+        return Promise.all(response.map((respon) => respon.json())); // 60ms
+      })
+      // 1 post -> m users
+      // n post -> n * m users
+      .then(([posts, users]) => {
+        // 660ms
+        const mappingData = posts.map((post) => {
+          // n
+          const user = users.find((u) => (u.id = post.userId)); // m:
+          return {
+            userId: post.userId,
+            author: user.name,
+            id: post.id,
+            title: post.title,
+            body: post.body,
+          };
+        }); // O(m*n) O(m+n)
+        return mappingData;
+      })
+  );
+}
+
+// regrex
+const str = 'hello     World3';
+const reg = /\s+/;
+const reg2 = /[a-zA-Z0-9]/;
+const result = str.split(reg);
+console.log('regex str ', result);
