@@ -1,24 +1,30 @@
 /** @format */
 
+import { useCallback, memo } from 'react';
+
 // props: property
 type Props = {
   id: number;
   name: string;
-  price: number;
+  price?: number;
   onClick?: (id: number) => void;
 };
 
-const Product = (props: Props) => {
-  const onClick = () => {
-    if (typeof props.onClick === 'function') {
-      props.onClick(props.id);
+const Product = ({ id, name, price, onClick }: Props) => {
+  console.log('id ', id);
+
+  const handleClick = useCallback(() => {
+    if (typeof onClick === 'function') {
+      onClick(id);
     }
-  };
+  }, [id, onClick]);
   return (
-    <button style={{ display: 'block' }} onClick={onClick}>
-      <h3>{props.name}</h3>
-      <i>{props.price}</i>
+    <button style={{ display: 'block' }} onClick={handleClick}>
+      <h3>{name}</h3>
+      <i>{price}</i>
     </button>
   );
 };
-export default Product;
+export default memo(Product, (prevProps, nextProps) => {
+  return prevProps.price === nextProps.price;
+});
