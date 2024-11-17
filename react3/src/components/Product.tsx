@@ -1,6 +1,7 @@
 /** @format */
 
-import { useCallback, memo } from 'react';
+import { useCallback, memo, useContext } from 'react';
+import { ListProductContext } from './../hooks/context';
 
 // props: property
 type Props = {
@@ -12,6 +13,8 @@ type Props = {
 
 const Product = ({ id, name, price, onClick }: Props) => {
   console.log('id ', id);
+  // const { toggleList } = useContext(ListProductContext);
+  // console.log('toggleList ', toggleList);
 
   const handleClick = useCallback(() => {
     if (typeof onClick === 'function') {
@@ -25,6 +28,9 @@ const Product = ({ id, name, price, onClick }: Props) => {
     </button>
   );
 };
-export default memo(Product, (prevProps, nextProps) => {
+const areEqual = function (prevProps: Props, nextProps: Props) {
   return prevProps.price === nextProps.price;
-});
+};
+// export default memo(Product); // shallow comparision // number, string, boolean, {{}} array
+export default memo(Product, areEqual);
+// HOC

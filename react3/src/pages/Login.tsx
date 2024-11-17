@@ -13,6 +13,7 @@ const Login = () => {
 
   const usernameRef = useRef<HTMLInputElement>(null); // uncontroled component
   const passwordRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<{ [key: string]: HTMLInputElement | null }>({});
 
   const handleOnChange = (type: string, event: any) => {
     setFormData({
@@ -23,11 +24,21 @@ const Login = () => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault(); //
-    console.log('usernameRef ', usernameRef);
-    console.log('passwordRef ', passwordRef);
+    // console.log('usernameRef ', usernameRef);
+    // console.log('passwordRef ', passwordRef);
+    console.log('inputRef ', inputRef);
     if (usernameRef.current) {
       const username = usernameRef.current.value;
       console.log('username ', username);
+    }
+
+    if (inputRef.current?.username) {
+      const username = inputRef.current?.username.value;
+      console.log('username input ref ', username);
+    }
+    if (inputRef.current?.password) {
+      const password = inputRef.current?.password.value;
+      console.log('password input ref ', password);
     }
     // if (passwordRef.current) {
     //   const password = passwordRef.current.value;
@@ -46,7 +57,8 @@ const Login = () => {
         inputKey='username'
         defaultValue={''}
         // onChange={handleOnChange}
-        ref={usernameRef}
+        // ref={usernameRef}
+        ref={(element) => (inputRef.current['username'] = element)}
       />
       <Input
         label='Password'
@@ -54,7 +66,8 @@ const Login = () => {
         inputKey='password'
         type='password'
         onChange={handleOnChange}
-        ref={passwordRef}
+        ref={(element) => (inputRef.current['password'] = element)}
+        // ref={passwordRef}
       />
       <button type='submit'>Login</button>
       <button type='button'>Cancel</button>
