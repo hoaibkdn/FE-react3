@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { Input } from './../components';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState(''); // controlled component
@@ -10,6 +11,7 @@ const Login = () => {
     username: '',
     password: '',
   });
+  const navigate = useNavigate();
 
   const usernameRef = useRef<HTMLInputElement>(null); // uncontroled component
   const passwordRef = useRef<HTMLInputElement>(null);
@@ -24,30 +26,19 @@ const Login = () => {
 
   const handleSubmit = (event: any) => {
     event.preventDefault(); //
-    // console.log('usernameRef ', usernameRef);
-    // console.log('passwordRef ', passwordRef);
-    console.log('inputRef ', inputRef);
-    if (usernameRef.current) {
-      const username = usernameRef.current.value;
-      console.log('username ', username);
-    }
-
+    let usernameVal = '',
+      passwordVal = '';
     if (inputRef.current?.username) {
-      const username = inputRef.current?.username.value;
-      console.log('username input ref ', username);
+      usernameVal = inputRef.current?.username.value;
     }
     if (inputRef.current?.password) {
-      const password = inputRef.current?.password.value;
-      console.log('password input ref ', password);
+      passwordVal = inputRef.current?.password.value;
     }
-    // if (passwordRef.current) {
-    //   const password = passwordRef.current.value;
-    //   console.log('password ', password);
-    // }
-    // console.log('usernameRef ', usernameRef);
-    console.log('username ', username);
-    console.log('password ', password);
+    if (usernameVal && passwordVal) {
+      navigate('/');
+    }
   };
+
   console.log('render form');
   return (
     <form onSubmit={handleSubmit}>

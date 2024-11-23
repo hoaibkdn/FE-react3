@@ -1,23 +1,17 @@
 /** @format */
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback } from 'react';
 import type { Post as PostModel } from './../types/post.type';
 import { Post } from './../components';
+import { useApis } from './../hooks/useApis';
+import { BASE_URL } from './../constants';
 
 const ListPost = () => {
-  const [listPosts, setListPosts] = useState<Array<PostModel>>([]);
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await fetch(
-        'https://jsonplaceholder.typicode.com/posts'
-      );
-      if (response.status === 200) {
-        const posts = await response.json();
-        setListPosts(posts);
-      }
-    };
-    fetchPosts();
-  }, []);
+  const {
+    data: listPosts = [],
+    setData: setListPosts,
+    loading,
+  } = useApis(BASE_URL + '/posts');
 
   const savePost = useCallback(
     (post: PostModel) => {
@@ -30,9 +24,14 @@ const ListPost = () => {
         setListPosts(newList);
       }
     },
-    [listPosts]
+    [listPosts, setListPosts]
   );
-
+  if (loading) {
+    <>
+      <h2>List post</h2>
+      <p>loading....</p>
+    </>;
+  }
   return (
     <>
       <h2>List post</h2>

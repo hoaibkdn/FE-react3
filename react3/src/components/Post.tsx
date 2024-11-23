@@ -1,6 +1,7 @@
 /** @format */
 import { memo, useState } from 'react';
 import type { Post as PostModel } from './../types/post.type';
+import { Link } from 'react-router-dom';
 
 type Props = {
   post: PostModel;
@@ -35,7 +36,12 @@ const Post = ({ post, savePost }: Props) => {
             <button onClick={handleSavePost}>Save</button>
           </div>
         ) : (
-          <b onDoubleClick={() => showInput(true)}>{post.title}</b>
+          <div>
+            <Link to={`/post/${post.id}`}>
+              <b>{post.title}</b>
+            </Link>
+            <button onClick={() => showInput(true)}>Edit</button>
+          </div>
         )}
       </div>
       <p>{post.body}</p>
