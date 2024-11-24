@@ -9,7 +9,6 @@ type Props = {
 };
 
 const Post = ({ post, savePost }: Props) => {
-  console.log('post ', post.id);
   const [editingTitle, setEditingTitle] = useState(false);
   const [titleText, setTitleText] = useState(post.title);
   const showInput = (value: boolean) => {

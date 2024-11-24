@@ -3,6 +3,8 @@
 import { useState, useRef } from 'react';
 import { Input } from './../components';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { LOGIN } from '../store/reducers/authReducer';
 
 const Login = () => {
   const [username, setUsername] = useState(''); // controlled component
@@ -11,6 +13,10 @@ const Login = () => {
     username: '',
     password: '',
   });
+
+  const state = useSelector((state) => state);
+  const dispatch = useDispatch();
+  console.log('state ', state);
   const navigate = useNavigate();
 
   const usernameRef = useRef<HTMLInputElement>(null); // uncontroled component
@@ -35,6 +41,11 @@ const Login = () => {
       passwordVal = inputRef.current?.password.value;
     }
     if (usernameVal && passwordVal) {
+      dispatch({
+        type: LOGIN,
+        username: usernameVal,
+        password: passwordVal,
+      });
       navigate('/');
     }
   };
@@ -44,11 +55,8 @@ const Login = () => {
     <form onSubmit={handleSubmit}>
       <Input
         label='Username'
-        // value={formData.username}
         inputKey='username'
         defaultValue={''}
-        // onChange={handleOnChange}
-        // ref={usernameRef}
         ref={(element) => (inputRef.current['username'] = element)}
       />
       <Input
