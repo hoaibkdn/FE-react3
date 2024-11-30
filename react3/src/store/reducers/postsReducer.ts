@@ -2,15 +2,17 @@
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { BASE_URL } from '../../constants';
+import { PostState, Post as PostModel } from './../../types/post.type';
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
-  const response = await fetch(BASE_URL + '/posts');
-  if (response.status === 200) {
-    const posts = await response.json();
-		// fetch users
+  const postsResponse = await fetch(BASE_URL + '/posts'); // Promise()
+
+  if (postsResponse.status === 200 ) {
+    // fetch users
+    const postData = await postsResponse.json(); // Response()
     return {
       error: false,
-      posts,
+      posts: postData,
     };
   }
   return {
@@ -18,28 +20,44 @@ export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
   };
 });
 
+const initialState: PostState = {
+  ids: [],
+  objList: {},
+  stage: 'idle', // loading, successed, failed
+  error: false,
+};
+
 const posts = createSlice({
   name: 'posts',
-  initialState: {
-    list: [],
-    stage: 'idle', // loading, successed, failed
-    error: false,
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchPosts.fulfilled, (state, action) => {
+        console.log('action --- ', action);
         const posts = action.payload.posts;
-        state.list = posts;
-				state.stage = 'succeed';
+        const ids: Array<number> = [];
+        const objList = posts.reduce((acc: PostState['objList'], post: PostModel) => {
+          if (post) {
+            acc[post.id] = post;
+            ids.push(post.id);
+          }
+          return acc;
+        }, {});
+        state.objList = {
+          ...state.objList,
+          ...objList
+        };
+        state.ids = [...state.ids, ...ids];
+        state.stage = 'succeed';
       })
       .addCase(fetchPosts.rejected, (state) => {
         state.error = true;
-				state.stage = 'failed';
+        state.stage = 'failed';
       })
-			.addCase(fetchPosts.pending, (state) => {
+      .addCase(fetchPosts.pending, (state) => {
         state.stage = 'loading';
-      })	
+      });
   },
 });
 

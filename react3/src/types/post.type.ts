@@ -6,7 +6,8 @@ export interface Post {
 }
 
 export type PostState = {
-  list: Array<Post>;
+  ids: Array<Post["id"]>,
+  objList: {[key: Post["id"]]: Post}
   stage: 'idle' | 'loading' | 'succeed' | 'failed',
   error: boolean
 }

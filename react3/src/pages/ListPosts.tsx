@@ -2,11 +2,13 @@
 
 import { useCallback, useEffect } from 'react';
 import type { Post as PostModel, PostState } from './../types/post.type';
+import type { UserState } from '../types/user.type';
 import { Post } from './../components';
 import { useApis } from './../hooks/useApis';
 import { BASE_URL } from './../constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPosts } from './../store/reducers/postsReducer';
+import { fetchUsers } from '../store/reducers/usersReducer';
 import type { AppDispatch } from './../store';
 
 const ListPost = () => {
@@ -20,12 +22,22 @@ const ListPost = () => {
 
   useEffect(() => {
     dispatch(fetchPosts());
+    dispatch(fetchUsers());
   }, [dispatch]);
 
-  const { list: listPosts, stage } = useSelector(
-    (state: { posts: PostState }) => state.posts
-  );
-  console.log('listPosts ', listPosts);
+  const {
+    postIds, // userid
+    objPosts,
+    objUsers,
+    stage,
+  } = useSelector((state: { posts: PostState; users: UserState }) => ({
+    postIds: state.posts.ids,
+    objPosts: state.posts.objList,
+    objUsers: state.users.objList,
+    stage: state.posts.stage,
+  }));
+
+  console.log('objUsers ', objUsers);
 
   const savePost = useCallback((post: PostModel) => {
     // const curPostIdx = listPosts.findIndex(
@@ -46,11 +58,17 @@ const ListPost = () => {
   return (
     <>
       <h2>List post</h2>
-      {listPosts.map((item: PostModel, index: number) => (
-        <Post key={index} post={item} savePost={savePost} />
-      ))}
+      {postIds.map((id: PostModel['id'], index: number) => {
+        const post = objPosts[id]; // userId
+        const user = objUsers[post.userId];
+        return <Post key={index} post={post} user={user} savePost={savePost} />;
+      })}
     </>
   );
 };
 
 export default ListPost;
+/**
+  edit title/body of a post
+  save the new data in the global state
+*/
