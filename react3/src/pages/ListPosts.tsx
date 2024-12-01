@@ -4,12 +4,11 @@ import { useCallback, useEffect } from 'react';
 import type { Post as PostModel, PostState } from './../types/post.type';
 import type { UserState } from '../types/user.type';
 import { Post } from './../components';
-import { useApis } from './../hooks/useApis';
-import { BASE_URL } from './../constants';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPosts } from './../store/reducers/postsReducer';
+import { fetchPosts, editPost } from './../store/reducers/postsReducer';
 import { fetchUsers } from '../store/reducers/usersReducer';
 import type { AppDispatch } from './../store';
+import { Navigate } from 'react-router-dom';
 
 const ListPost = () => {
   // const {
@@ -30,25 +29,28 @@ const ListPost = () => {
     objPosts,
     objUsers,
     stage,
-  } = useSelector((state: { posts: PostState; users: UserState }) => ({
-    postIds: state.posts.ids,
-    objPosts: state.posts.objList,
-    objUsers: state.users.objList,
-    stage: state.posts.stage,
-  }));
+    isLoggedIn,
+  } = useSelector(
+    (state: { posts: PostState; users: UserState; auth: any }) => ({
+      postIds: state.posts.ids,
+      objPosts: state.posts.objList,
+      objUsers: state.users.objList,
+      stage: state.posts.stage,
+      isLoggedIn: state.auth.isLoggedIn,
+    })
+  );
 
-  console.log('objUsers ', objUsers);
-
-  const savePost = useCallback((post: PostModel) => {
-    // const curPostIdx = listPosts.findIndex(
-    //   (item: PostModel) => item.id === post.id
-    // );
-    // if (curPostIdx >= 0) {
-    //   const newList: Array<PostModel> = [...listPosts];
-    //   newList[curPostIdx] = post;
-    //   setListPosts(newList);
-    // }
-  }, []);
+  const savePost = useCallback(
+    (post: PostModel) => {
+      console.log('post ', post);
+      dispatch(editPost(post));
+    },
+    [dispatch]
+  );
+  console.log('isLoggedIn ', isLoggedIn);
+  if (!isLoggedIn) {
+    return <Navigate to='/login' replace={true} />;
+  }
   if (stage === 'loading') {
     <>
       <h2>List post</h2>

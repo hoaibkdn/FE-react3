@@ -6,13 +6,15 @@ const auth = createSlice({
 	name: 'auth',
 	initialState: {
 		username: 'hello',
-		password: ''
+		password: '',
+		isLoggedIn: false,
 	},
 	reducers: {},
 	extraReducers: (builder) => {
 		builder.addCase(LOGIN, (state, action: any) => {
 			state.username = action.username
 			state.password = action.password
+			state.isLoggedIn = true	
 		})
 	}
 })

@@ -1,5 +1,7 @@
 /** @format */
 import { forwardRef } from 'react';
+import TextField from '@mui/material/TextField';
+
 type Props = {
   label: string;
   value?: string;
@@ -23,13 +25,19 @@ const Input = forwardRef<HTMLInputElement, Props>(
   ) => {
     return (
       <div>
-        <label>{label}</label>
-        <input
-          type={type}
-          ref={ref}
+        <TextField
+          id='outlined-basic'
+          label={label}
+          variant='outlined'
           defaultValue={defaultValue}
-          value={value}
+          type={type}
+          inputRef={ref}
+          style={{
+            width: '100%',
+            marginBottom: 10,
+          }}
           onChange={(e) => onChange(inputKey, e)}
+          value={value}
         />
       </div>
     );

@@ -30,11 +30,20 @@ const initialState: PostState = {
 const posts = createSlice({
   name: 'posts',
   initialState,
-  reducers: {},
+  reducers: {
+    editPost: (state, action) => {
+      const { id } = action.payload;
+      const existingPost = state.objList[id];
+      const post = {
+        ...existingPost,
+        ...action.payload 
+      }
+      state.objList[id] = post
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchPosts.fulfilled, (state, action) => {
-        console.log('action --- ', action);
         const posts = action.payload.posts;
         const ids: Array<number> = [];
         const objList = posts.reduce((acc: PostState['objList'], post: PostModel) => {
@@ -61,5 +70,6 @@ const posts = createSlice({
   },
 });
 
+export const { editPost } = posts.actions;
 const postsReducer = posts.reducer;
 export default postsReducer;

@@ -2,9 +2,12 @@
 
 import { useState, useRef } from 'react';
 import { Input } from './../components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { LOGIN } from '../store/reducers/authReducer';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 
 const Login = () => {
   const [username, setUsername] = useState(''); // controlled component
@@ -14,9 +17,8 @@ const Login = () => {
     password: '',
   });
 
-  const state = useSelector((state) => state);
+  const auth = useSelector((state: { auth: any }) => state.auth);
   const dispatch = useDispatch();
-  console.log('state ', state);
   const navigate = useNavigate();
 
   const usernameRef = useRef<HTMLInputElement>(null); // uncontroled component
@@ -34,6 +36,7 @@ const Login = () => {
     event.preventDefault(); //
     let usernameVal = '',
       passwordVal = '';
+    console.log(inputRef.current);
     if (inputRef.current?.username) {
       usernameVal = inputRef.current?.username.value;
     }
@@ -46,32 +49,58 @@ const Login = () => {
         username: usernameVal,
         password: passwordVal,
       });
-      navigate('/');
     }
   };
+  console.log('auth ', auth);
 
-  console.log('render form');
+  if (auth.isLoggedIn) {
+    return <Navigate to='/' replace={true} />;
+  }
   return (
-    <form onSubmit={handleSubmit}>
-      <Input
-        label='Username'
-        inputKey='username'
-        defaultValue={''}
-        ref={(element) => (inputRef.current['username'] = element)}
-      />
-      <Input
-        label='Password'
-        value={formData.password}
-        inputKey='password'
-        type='password'
-        onChange={handleOnChange}
-        ref={(element) => (inputRef.current['password'] = element)}
-        // ref={passwordRef}
-      />
-      <button type='submit'>Login</button>
-      <button type='button'>Cancel</button>
-      <button type='button'>Forgot password</button>
-    </form>
+    <div
+      style={{
+        backgroundColor: 'gray',
+        minHeight: '100vh',
+        paddingTop: 10,
+      }}>
+      <Box
+        component='form'
+        onSubmit={handleSubmit}
+        style={{
+          margin: 'auto',
+          backgroundColor: 'white',
+          width: 350,
+          padding: 20,
+          borderRadius: 10,
+        }}>
+        <Input
+          label='Username'
+          inputKey='username'
+          defaultValue={''}
+          ref={(element) => (inputRef.current['username'] = element)}
+        />
+        <Input
+          label='Password'
+          value={formData.password}
+          inputKey='password'
+          type='password'
+          onChange={handleOnChange}
+          ref={(element) => (inputRef.current['password'] = element)}
+          // ref={passwordRef}
+        />
+        <Stack direction='row' spacing={2}>
+          <Button type='submit' variant='contained' size='small'>
+            Login
+          </Button>
+          <Button type='button' variant='outlined' size='small'>
+            Cancel
+          </Button>
+          <Button type='button' size='small'>
+            Forgot password
+          </Button>
+        </Stack>
+      </Box>
+    </div>
   );
 };
 
